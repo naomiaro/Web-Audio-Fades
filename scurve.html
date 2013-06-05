@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset=utf-8 />
+<title>SCurve Fade Demo</title>
+<style></style>
+
+<script type="text/javascript">
+
+/*
+    Test script to demonstrate an exponential fade.
+*/
+var ctx = new (window.AudioContext || window.webkitAudioContext), 
+    url = '../media/Tangerine.wav',
+    audio = new Audio(url),  
+    gainNode = ctx.createGain(),
+    source,
+    start,
+    end;
+
+    audio.addEventListener('progress', function(e){
+        var x;
+
+    }, false);
+
+    audio.addEventListener('canplaythrough', function(){
+        source = ctx.createMediaElementSource(audio);
+        source.connect(gainNode);
+        gainNode.connect(ctx.destination);
+
+    }, false);
+
+
+function play() {
+
+    start = ctx.currentTime,
+    end = start + 3;
+
+    gainNode.gain.exponentialRampToValueAtTime(0.01, start);
+    gainNode.gain.exponentialRampToValueAtTime(1, 3, end);
+    
+    audio.play();
+}
+
+function stop() {
+
+    audio.pause();
+}         
+
+</script>
+
+</head>
+<body>
+  
+  <div id="play" onclick="play()">Play</div>
+  <div id="stop" onclick="stop()">Stop</div>
+</body>
+</html>
