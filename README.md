@@ -5,9 +5,9 @@ Examples demonstrating fades using the Web Audio API
 
 demos use the functions:
 
-* linearRampToValueAtTime
-* exponentialRampToValueAtTime
-* setValueCurveAtTime
+* [linearRampToValueAtTime](https://developer.mozilla.org/en-US/docs/Web/API/AudioParam/linearRampToValueAtTime)
+* [exponentialRampToValueAtTime](https://developer.mozilla.org/en-US/docs/Web/API/AudioParam/exponentialRampToValueAtTime)
+* [setValueCurveAtTime](https://developer.mozilla.org/en-US/docs/Web/API/AudioParam/setValueCurveAtTime)
 
 from the Web Audio API
 
