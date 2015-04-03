@@ -35,7 +35,7 @@
             source.connect(gainNode);
             gainNode.connect(ctx.destination);
 
-            start = ctx.currentTime,
+            start = ctx.currentTime;
             end = start + 5;
 
             gainNode.gain.linearRampToValueAtTime(0.01, start);

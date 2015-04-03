@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset=utf-8 />
+<title>Logarithmic Fade Demo</title>
+<style>
+    .hidden {
+        display: none;
+    }
+</style>
+</head>
+<body>
+  
+  <div id='play' class='hidden'>Play</div>
+  <div id='stop'>Stop</div>
+
+<script type="text/javascript">
+(function(){
+
+    //creating a curve to simulate a logarithmic curve with setValueCurveAtTime.
+    var createLogarithmicBuffer = function createLogarithmicBuffer(direction, base, length) {
+        var base = base || 10,
+            length = length || 48000,
+            curve = new Float32Array(length),
+            percent = 0,
+            index,
+            i;
+
+        for (i = 0; i < length; i++) {
+            //index for the curve array.
+            //direction positive for fade in, negative for fade out
+            index = direction > 0 ? i : length - 1 - i;
+
+            percent = i / length;
+            curve[index] = Math.log(1 + base*percent) / Math.log(1 + base);
+        }
+
+        return curve;
+    };
+  
+    /*
+        Test script to demonstrate an exponential fade.
+    */
+    var ctx = new AudioContext(), 
+        url = 'Legend.mp3',
+        audio = new Audio(url),  
+        gainNode = ctx.createGain(),
+        source,
+        start,
+        end,
+        play,
+        stop;
+
+        audio.addEventListener('canplaythrough', function(){
+            source = ctx.createMediaElementSource(audio);
+            source.connect(gainNode);
+            gainNode.connect(ctx.destination);
+
+            curve = createLogarithmicBuffer(1, ctx.samplerate);
+
+            start = ctx.currentTime;
+            gainNode.gain.setValueCurveAtTime(curve, start, 5);
+            
+            audio.play();
+        });
+
+        play = document.getElementById("play");
+        play.addEventListener('click', function(e){
+            play.className='hidden';
+            stop.className='';
+            audio.play();
+        })
+
+        stop = document.getElementById("stop");
+        stop.addEventListener('click', function(e){
+            play.className='';
+            stop.className='hidden';
+            audio.pause();
+        })
+  
+})();
+</script>
+</body>
+</html>
