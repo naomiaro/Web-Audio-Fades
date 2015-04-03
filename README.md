@@ -5,9 +5,9 @@ Examples demonstrating fades using the Web Audio API
 
 demos use the functions:
 
-linearRampToValueAtTime
-exponentialRampToValueAtTime
-setValueCurveAtTime
+* linearRampToValueAtTime
+* exponentialRampToValueAtTime
+* setValueCurveAtTime
 
 from the Web Audio API
 
