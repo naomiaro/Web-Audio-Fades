@@ -30,11 +30,6 @@
         play,
         stop;
 
-        audio.addEventListener('progress', function(e){
-            var x;
-
-        });
-
         audio.addEventListener('canplaythrough', function(){
             source = ctx.createMediaElementSource(audio);
             source.connect(gainNode);
