@@ -3,12 +3,16 @@
 <head>
 <meta charset=utf-8 />
 <title>Exponential Fade Demo</title>
-<style></style>
+<style>
+    .hidden {
+        display: none;
+    }
+</style>
 </head>
 <body>
   
-  <div id=play>Play</div>
-  <div id=stop>Stop</div>
+  <div id='play' class='hidden'>Play</div>
+  <div id='stop'>Stop</div>
 
 <script type="text/javascript">
 (function(){
@@ -16,18 +20,20 @@
     /*
         Test script to demonstrate an exponential fade.
     */
-    var ctx = new webkitAudioContext(), 
-        url = '../media/Tangerine.mp3',
+    var ctx = new AudioContext(), 
+        url = 'Legend.mp3',
         audio = new Audio(url),  
         gainNode = ctx.createGain(),
         source,
         start,
-        end;
+        end,
+        play,
+        stop;
 
         audio.addEventListener('progress', function(e){
             var x;
 
-        }, false);
+        });
 
         audio.addEventListener('canplaythrough', function(){
             source = ctx.createMediaElementSource(audio);
@@ -35,13 +41,27 @@
             gainNode.connect(ctx.destination);
 
             start = ctx.currentTime,
-            end = start + 3;
+            end = start + 5;
 
             gainNode.gain.exponentialRampToValueAtTime(0.01, start);
-            gainNode.gain.exponentialRampToValueAtTime(1, 3, end);
+            gainNode.gain.exponentialRampToValueAtTime(1, end);
             
             audio.play();
-        }, false);  
+        });
+
+        play = document.getElementById("play");
+        play.addEventListener('click', function(e){
+            play.className='hidden';
+            stop.className='';
+            audio.play();
+        })
+
+        stop = document.getElementById("stop");
+        stop.addEventListener('click', function(e){
+            play.className='';
+            stop.className='hidden';
+            audio.pause();
+        })
   
 })();
 </script>
