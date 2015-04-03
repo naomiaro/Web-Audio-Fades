@@ -2,64 +2,61 @@
 <html>
 <head>
 <meta charset=utf-8 />
-<title>Linear Fade Example</title>
-<style></style>
+<title>Linear Fade Demo</title>
+<style>
+    .hidden {
+        display: none;
+    }
+</style>
 </head>
 <body>
-
-    <div id=percent>0%</div>
+  
+  <div id='play' class='hidden'>Play</div>
+  <div id='stop'>Stop</div>
 
 <script type="text/javascript">
 (function(){
-
-var ctx = new webkitAudioContext(), 
-    url = '../media/Tangerine.mp3',
-    percent = document.getElementById('percent'),
-    buffer;
   
-/**
- * Loads an audio file via XHR.
- */
-function loadBuffer(src) {
-    var that = this,
-        xhr = new XMLHttpRequest();
+    /*
+        Test script to demonstrate an exponential fade.
+    */
+    var ctx = new AudioContext(), 
+        url = 'Legend.mp3',
+        audio = new Audio(url),  
+        gainNode = ctx.createGain(),
+        source,
+        start,
+        end,
+        play,
+        stop;
 
-    xhr.open('GET', src, true);
-    xhr.responseType = 'arraybuffer';
+        audio.addEventListener('canplaythrough', function(){
+            source = ctx.createMediaElementSource(audio);
+            source.connect(gainNode);
+            gainNode.connect(ctx.destination);
 
-    xhr.addEventListener('progress', function(e) {
-        var percentComplete;
+            start = ctx.currentTime,
+            end = start + 5;
 
-        if (e.lengthComputable) {
-            percentComplete = e.loaded / e.total * 100;
-            percent.innerHTML = percentComplete + "%";
-        } 
+            gainNode.gain.linearRampToValueAtTime(0.01, start);
+            gainNode.gain.linearRampToValueAtTime(1, end);
+            
+            audio.play();
+        });
 
-    }, false);
+        play = document.getElementById("play");
+        play.addEventListener('click', function(e){
+            play.className='hidden';
+            stop.className='';
+            audio.play();
+        })
 
-    xhr.addEventListener('load', function(e) {
-        
-        ctx.decodeAudioData(
-            e.target.response,
-            function (buffer) {
-                buffer = buffer;
-            },
-            function(err) { 
-                console.log("err(decodeAudioData): "+err);
-            }
-        );
-    }, false);
-
-    xhr.send();
-}
-
-function createFade() {
-
-}
-
-function play() {
-
-}
+        stop = document.getElementById("stop");
+        stop.addEventListener('click', function(e){
+            play.className='';
+            stop.className='hidden';
+            audio.pause();
+        })
   
 })();
 </script>
