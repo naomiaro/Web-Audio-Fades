@@ -1,7 +1,7 @@
 Web Audio API Fades
 ===============
 
-Examples demonstrating fades using the Web Audio API
+Examples demonstrating [four main fade types](http://audioundone.com/different-fade-shapes) using the Web Audio API
 
 demos use the functions:
 
